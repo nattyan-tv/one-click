@@ -1,4 +1,4 @@
-# one-cklick
+# one-click
 forked by [yoidea](https://github.com/yoidea)
 
 # detail
