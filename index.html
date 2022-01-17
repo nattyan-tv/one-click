@@ -78,6 +78,58 @@
         </table>
       </div>
     </section>
+    <div id="modalArea" class="modalNoDisp">
+      <div class="modalWindow">
+        <p style="font-size: xx-large;">ラムダさんがまさかの！？<br>極秘情報は下から！！</p>
+        <p><input style="font-size: xx-large;" type="button" value="ENTER" onclick="modalClose()"></p>
+      </div>
+    </div>
+    <style type="text/css">
+      /* https://webparts.cman.jp/page/modalwindow/ */
+      /* === モーダル非表示（初期） ============================== */
+      .modalNoDisp {
+        display : none;
+      }
+      
+      /* === モーダルバックグランド ============================== */
+      .modalBg {
+        position   : fixed;
+        overflow   : hidden;
+        top        : 0;
+        right      : 0;
+        bottom     : 0;
+        left       : 0;
+        background : #000000;
+        z-index    : 10;
+      }
+      
+      /* === モーダルバックグランド：CLOSE時のアニメーション ===== */
+      .modalBgClose {
+        bottom     : 100%;
+        animation  : bgCloseAnime 0.1s ease;
+      }
+      @keyframes bgCloseAnime {                     /* フェードイン */
+        0% { opacity: 1; bottom: 0 }
+        100% { opacity: 0; bottom: 0 }
+      }
+      
+      /* === モーダルウインド ==================================== */
+      .modalBg .modalWindow {
+                                   /* モーダルウインドを中心に表示 */
+        position      : absolute;
+        top           : 50%;
+        left          : 50%;
+        transform     : translate(-50%, -50%);
+        z-index       : 11;
+        width         : 80vw;
+        min-height    : 50vh;
+        background    : #fff;
+        border        : 3px solid #35557f;
+        border-radius : 10px;
+        font-size     : 16pt;
+        text-align    : center;
+      }
+      </style>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/platform/1.3.6/platform.min.js"></script>
     <script type="text/javascript">
@@ -85,22 +137,52 @@
       // $(window).on('popstate', function(){
       //   history.go(1);
       // });
+      function modalOpen(){
+        document.getElementById("modalArea").className = "modalBg";
+      }
+      
+      const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+      function modalClose(){
+        document.getElementById("modalArea").className = "modalNoDisp";
+        se.play();
+        c = 6 * 60 * 60;
+        setInterval(() => {
+          $("#hour").text(Math.floor(c / 3600));
+          $("#min").text(Math.floor((c % 3600) / 60));
+          $("#sec").text(Math.floor(c % 60));
+          c = c - 1;
+          if (c == 0){
+            alert("料金の支払いが確認できませんでした。\n法的措置をとらせていただく可能性がございますので、十分にご留意ください。");
+            location.replace("https://www.youtube.com/c/%E3%83%A9%E3%83%A0%E3%83%80");
+          }
+        }, 1000);
+          $("#device").text(platform.description);
+          $("#date").text(new Date().toLocaleString("ja-JP"));
+          $("#delete").click(() => {
+            $("#notification").addClass("is-hidden")
+        });
+        
+        voice.play();
+        voice.loop = true;
+        siren.play();
+        siren.loop = true;
+        
+        document.body.requestFullscreen();	
+      }
+
       const se = new Audio(
         "https://dl.dropbox.com/s/pjf5iswhy43fc1f/camera-shutter3.mp3"
       );
-      se.play();
-      let c = 6 * 60 * 60;
-      setInterval(() => {
-        $("#hour").text(Math.floor(c / 3600));
-        $("#min").text(Math.floor((c % 3600) / 60));
-        $("#sec").text(Math.floor(c % 60));
-        c = c - 1;
-      }, 1000);
-      $("#device").text(platform.description);
-      $("#date").text(new Date().toLocaleString("ja-JP"));
-      $("#delete").click(() => {
-        $("#notification").addClass("is-hidden")
-      });
+      const voice = new Audio(
+        "houteki.wav"
+      );
+      
+      const siren = new Audio(
+        "siren.mp3"
+      );
+
+      modalOpen();
     </script>
   </body>
 </html>
